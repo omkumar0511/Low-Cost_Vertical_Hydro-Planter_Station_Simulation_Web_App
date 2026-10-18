@@ -1,0 +1,274 @@
+{
+  "presets": [
+    {
+      "id": "report_baseline",
+      "name": "Report Baseline (2 mm hole, coco-peat, mint)",
+      "description": "The exact baseline setup tested at L. D. College of Engineering: 2L PET bottle, 2mm cap orifice, lightweight coco-peat, mint plant at moderate campus temperature.",
+      "module1": {
+        "bottleCapacity": 2.0,
+        "fillLevel": 100,
+        "holeDiameter": 2.0,
+        "soilType": "cocopeat",
+        "plantType": "mint",
+        "temperature": 28,
+        "sunlight": "partial",
+        "refillInterval": 72,
+        "clogging": 5,
+        "calibrationFactor": 0.002
+      },
+      "module2": {
+        "days": 7,
+        "waterSource": "ro_reject",
+        "surfaceEvapLoss": 35,
+        "surfaceRunoffLoss": 20,
+        "surfacePercolationLoss": 15,
+        "dripEvapLoss": 4,
+        "dripRunoffLoss": 0,
+        "dripPercolationLoss": 6
+      },
+      "module3": {
+        "bottleCount": 4,
+        "soilVolume": 1.5,
+        "soilType": "cocopeat",
+        "saturation": 60,
+        "plantMass": 0.1,
+        "ropeType": "nylon",
+        "ropeStrands": 2,
+        "hookRating": 50
+      },
+      "module4": {
+        "weatherPattern": "typical",
+        "initialHole": 2.0,
+        "hasBlackPaint": false,
+        "hasShadeNet": false
+      },
+      "module5": {
+        "bottleCount": 20,
+        "deadlineDays": 14,
+        "includePaint": true,
+        "includeHooks": true
+      },
+      "module6": {
+        "bottleCount": 20,
+        "stationCount": 3,
+        "bottleWeightGrams": 45
+      }
+    },
+    {
+      "id": "hot_summer_ahmedabad",
+      "name": "Hot Summer Day (38°C, Full Sun, High Evaporation)",
+      "description": "Simulates harsh Gujarat summer conditions with elevated ambient heat (38°C) and full solar irradiation, accelerating evapotranspiration.",
+      "module1": {
+        "bottleCapacity": 2.0,
+        "fillLevel": 100,
+        "holeDiameter": 2.5,
+        "soilType": "mix",
+        "plantType": "tomato",
+        "temperature": 38,
+        "sunlight": "full",
+        "refillInterval": 48,
+        "clogging": 10,
+        "calibrationFactor": 0.002
+      },
+      "module2": {
+        "days": 14,
+        "waterSource": "canteen_leftover",
+        "surfaceEvapLoss": 45,
+        "surfaceRunoffLoss": 20,
+        "surfacePercolationLoss": 10,
+        "dripEvapLoss": 6,
+        "dripRunoffLoss": 0,
+        "dripPercolationLoss": 5
+      },
+      "module3": {
+        "bottleCount": 4,
+        "soilVolume": 1.5,
+        "soilType": "mix",
+        "saturation": 75,
+        "plantMass": 0.2,
+        "ropeType": "nylon",
+        "ropeStrands": 2,
+        "hookRating": 50
+      },
+      "module4": {
+        "weatherPattern": "heatwave",
+        "initialHole": 2.5,
+        "hasBlackPaint": true,
+        "hasShadeNet": true
+      },
+      "module5": {
+        "bottleCount": 20,
+        "deadlineDays": 14,
+        "includePaint": true,
+        "includeHooks": true
+      },
+      "module6": {
+        "bottleCount": 20,
+        "stationCount": 5,
+        "bottleWeightGrams": 45
+      }
+    },
+    {
+      "id": "clogged_cap_alert",
+      "name": "Clogged Cap (80% Clog, Garden Soil)",
+      "description": "Severe orifice blockage caused by fine sediment or algae accumulation without protective mesh. Drip rate plummets and plant undergoes water stress.",
+      "module1": {
+        "bottleCapacity": 1.5,
+        "fillLevel": 80,
+        "holeDiameter": 1.5,
+        "soilType": "garden_soil",
+        "plantType": "coriander",
+        "temperature": 32,
+        "sunlight": "partial",
+        "refillInterval": 72,
+        "clogging": 80,
+        "calibrationFactor": 0.002
+      },
+      "module2": {
+        "days": 7,
+        "waterSource": "ro_reject",
+        "surfaceEvapLoss": 35,
+        "surfaceRunoffLoss": 20,
+        "surfacePercolationLoss": 15,
+        "dripEvapLoss": 4,
+        "dripRunoffLoss": 0,
+        "dripPercolationLoss": 6
+      },
+      "module3": {
+        "bottleCount": 3,
+        "soilVolume": 1.5,
+        "soilType": "garden_soil",
+        "saturation": 50,
+        "plantMass": 0.1,
+        "ropeType": "twine",
+        "ropeStrands": 1,
+        "hookRating": 25
+      },
+      "module4": {
+        "weatherPattern": "typical",
+        "initialHole": 1.5,
+        "hasBlackPaint": false,
+        "hasShadeNet": false
+      },
+      "module5": {
+        "bottleCount": 15,
+        "deadlineDays": 14,
+        "includePaint": false,
+        "includeHooks": true
+      },
+      "module6": {
+        "bottleCount": 15,
+        "stationCount": 2,
+        "bottleWeightGrams": 45
+      }
+    },
+    {
+      "id": "overloaded_wall_stack",
+      "name": "Overloaded Wall Stack (10 Bottles, Garden Soil, Wet)",
+      "description": "Dangerous structural scenario: 10 heavy garden soil bottles on a single jute twine string. Tests structural safety calculation and triggers structural failure alert.",
+      "module1": {
+        "bottleCapacity": 2.0,
+        "fillLevel": 100,
+        "holeDiameter": 2.0,
+        "soilType": "garden_soil",
+        "plantType": "pothos",
+        "temperature": 27,
+        "sunlight": "shade",
+        "refillInterval": 72,
+        "clogging": 0,
+        "calibrationFactor": 0.002
+      },
+      "module2": {
+        "days": 10,
+        "waterSource": "fresh_water",
+        "surfaceEvapLoss": 30,
+        "surfaceRunoffLoss": 20,
+        "surfacePercolationLoss": 15,
+        "dripEvapLoss": 4,
+        "dripRunoffLoss": 0,
+        "dripPercolationLoss": 5
+      },
+      "module3": {
+        "bottleCount": 10,
+        "soilVolume": 1.8,
+        "soilType": "garden_soil",
+        "saturation": 95,
+        "plantMass": 0.2,
+        "ropeType": "twine",
+        "ropeStrands": 1,
+        "hookRating": 25
+      },
+      "module4": {
+        "weatherPattern": "typical",
+        "initialHole": 2.0,
+        "hasBlackPaint": false,
+        "hasShadeNet": false
+      },
+      "module5": {
+        "bottleCount": 30,
+        "deadlineDays": 12,
+        "includePaint": false,
+        "includeHooks": false
+      },
+      "module6": {
+        "bottleCount": 30,
+        "stationCount": 3,
+        "bottleWeightGrams": 45
+      }
+    },
+    {
+      "id": "best_case_system",
+      "name": "Best Case (Coco-Peat, Nylon Rope, RO Reject, 20-Bottle Station)",
+      "description": "Optimized campus deployment: lightweight coco-peat prevents load issues, double-strand braided nylon guarantees SF > 3.0, RO reject water minimizes municipal draw, and black paint stops algae.",
+      "module1": {
+        "bottleCapacity": 2.0,
+        "fillLevel": 100,
+        "holeDiameter": 2.0,
+        "soilType": "cocopeat",
+        "plantType": "chives",
+        "temperature": 26,
+        "sunlight": "partial",
+        "refillInterval": 96,
+        "clogging": 0,
+        "calibrationFactor": 0.002
+      },
+      "module2": {
+        "days": 30,
+        "waterSource": "ro_reject",
+        "surfaceEvapLoss": 35,
+        "surfaceRunoffLoss": 25,
+        "surfacePercolationLoss": 15,
+        "dripEvapLoss": 3,
+        "dripRunoffLoss": 0,
+        "dripPercolationLoss": 4
+      },
+      "module3": {
+        "bottleCount": 5,
+        "soilVolume": 1.5,
+        "soilType": "cocopeat",
+        "saturation": 55,
+        "plantMass": 0.1,
+        "ropeType": "nylon",
+        "ropeStrands": 2,
+        "hookRating": 60
+      },
+      "module4": {
+        "weatherPattern": "typical",
+        "initialHole": 2.0,
+        "hasBlackPaint": true,
+        "hasShadeNet": true
+      },
+      "module5": {
+        "bottleCount": 20,
+        "deadlineDays": 14,
+        "includePaint": true,
+        "includeHooks": true
+      },
+      "module6": {
+        "bottleCount": 20,
+        "stationCount": 5,
+        "bottleWeightGrams": 45
+      }
+    }
+  ]
+}

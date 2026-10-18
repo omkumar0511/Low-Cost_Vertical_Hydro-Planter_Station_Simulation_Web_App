@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PET Hydro-Planter Simulator | LDCE IT Project Management</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="Interactive Simulation Web App for Low-Cost Vertical Hydro-Planter Station Using Repurposed Campus PET Waste (B.E. Sem V IT Micro-Project, LDCE)">
+</head>
+<body>
+
+  <!-- Academic Disclaimer Banner -->
+  <div class="academic-disclaimer-banner">
+    <div>
+      <strong>L. D. College of Engineering (B.E. Sem V IT - Project Management Micro-Project):</strong>
+      Vertical Hydro-Planter Station Using Repurposed Campus PET Waste
+    </div>
+    <div>
+      <span class="badge badge-info">Educational Simulation</span>
+      &nbsp; Calibrated to empirical campus report measurements
+    </div>
+  </div>
+
+  <div class="app-container">
+
+    <!-- Left Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <h1>🌱 HydroPlanter Sim</h1>
+        <p>Best Out of Waste Micro-Project</p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#module1" class="sidebar-nav-item active" data-module="module1" id="nav-module1">
+          <span class="icon">💧</span>
+          <span>1. Drip Feeder Sim</span>
+          <span class="badge badge-success">Core</span>
+        </a>
+        <a href="#module2" class="sidebar-nav-item" data-module="module2" id="nav-module2">
+          <span class="icon">📊</span>
+          <span>2. Water Efficiency</span>
+        </a>
+        <a href="#module3" class="sidebar-nav-item" data-module="module3" id="nav-module3">
+          <span class="icon">🪢</span>
+          <span>3. Load & Safety</span>
+        </a>
+        <a href="#module4" class="sidebar-nav-item" data-module="module4" id="nav-module4">
+          <span class="icon">🧪</span>
+          <span>4. 7-Day Monitoring</span>
+        </a>
+        <a href="#module5" class="sidebar-nav-item" data-module="module5" id="nav-module5">
+          <span class="icon">📋</span>
+          <span>5. Project Mgmt</span>
+        </a>
+        <a href="#module6" class="sidebar-nav-item" data-module="module6" id="nav-module6">
+          <span class="icon">🌍</span>
+          <span>6. Eco Impact</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p><strong>System Specs:</strong> 2L PET Bottle, 2mm orifice, Coco-Peat, RO Reject water.</p>
+        <p style="margin-top: 4px; font-size: 10px; opacity: 0.8;">B.E. Sem V IT &bull; LDCE Ahmedabad</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+
+      <!-- Top Global Control Bar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <select id="global-preset-select" class="form-control preset-dropdown">
+            <option value="" disabled selected>-- Loading Presets --</option>
+          </select>
+          <button id="btn-toggle-theme" class="btn btn-outline-secondary btn-sm" title="Toggle Dark/Light Mode">🌙 Dark Mode</button>
+        </div>
+
+        <div class="topbar-right">
+          <button id="btn-open-saved-runs" class="btn btn-outline-primary btn-sm">💾 Saved Runs</button>
+          <button id="btn-global-export-csv" class="btn btn-outline-secondary btn-sm">📥 Export CSV</button>
+          <button id="btn-global-print-report" class="btn btn-outline-secondary btn-sm">🖨️ Print Report</button>
+          <button id="btn-open-viva-modal" class="btn btn-primary btn-sm">🎓 Formulas</button>
+        </div>
+      </header>
+
+      <!-- Module Content Scroll Area -->
+      <div class="module-content-area">
+
+        <!-- ================================================================ -->
+        <!-- MODULE 1: DRIP FEEDER & 2D SOIL DIFFUSION SIMULATOR (CORE)       -->
+        <!-- ================================================================ -->
+        <section id="module1" class="module-pane active">
+          <div class="dashboard-grid">
+
+            <!-- Left: Visualizations & Charts -->
+            <div class="dashboard-stage">
+
+              <!-- Physical Bottle Animation + 2D Soil Diffusion Heatmap -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">💧 Real-Time Physics & 2D Soil Moisture Diffusion</h2>
+                  <div class="button-group">
+                    <button id="m1-btn-refill-now" class="btn btn-sm btn-outline-primary">💧 Refill Bottle Now</button>
+                  </div>
+                </div>
+
+                <div class="dual-canvas-container">
+                  <div class="canvas-wrapper">
+                    <canvas id="m1-canvas-anim"></canvas>
+                  </div>
+                  <div class="canvas-wrapper">
+                    <canvas id="m1-canvas-heatmap"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Time Series Chart -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">📈 Dynamic System Telemetry Chart</h2>
+                  <div>
+                    <select id="m1-chart-select" class="form-control form-control-sm" style="width: 220px;">
+                      <option value="water_and_moisture">Water (L) & Root Moisture (%)</option>
+                      <option value="plant_health">Plant Health Score (0 - 100)</option>
+                      <option value="cum_water">Cumulative Water Used (ml)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="canvas-wrapper full-canvas-wrapper">
+                  <canvas id="m1-canvas-chart"></canvas>
+                </div>
+              </div>
+
+              <!-- Warning Banner -->
+              <div id="m1-warning-box"></div>
+
+              <!-- Live Readout Metrics Strip -->
+              <div class="metrics-strip">
+                <div class="metric-card">
+                  <div class="metric-label">Sim Time</div>
+                  <div id="m1-metric-time" class="metric-value">0d 0h 0m</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Bottle Water</div>
+                  <div id="m1-metric-water" class="metric-value">2.00 L</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Drip Rate</div>
+                  <div id="m1-metric-drip-rate" class="metric-value">0.0 ml/h</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Root Moisture</div>
+                  <div id="m1-metric-moisture" class="metric-value">35%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Plant Health</div>
+                  <div id="m1-metric-health" class="metric-value">100%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Time to Empty</div>
+                  <div id="m1-metric-time-to-empty" class="metric-value">--</div>
+                </div>
+              </div>
+
+              <!-- Collapsible Explanation Panel -->
+              <div class="accordion-panel">
+                <div class="accordion-header">
+                  <span>📘 How this model works: Torricelli's Law & 2D Porous Diffusion</span>
+                  <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                  <p><strong>1. Torricelli Outflow:</strong> Discharge velocity through the 2 mm cap orifice follows \(v = \sqrt{2gh}\), where \(h\) is water head height in the inverted bottle. The volumetric flow rate is given by:</p>
+                  <p><code>Q = Cd · A · √(2gh) · (1 - Clogging) · F_backpressure · K_calib</code></p>
+                  <p>Here \(C_d \approx 0.60\). In real soil, porous contact at the cap creates hydraulic backpressure \(F_{back}\) as the root zone saturates, preventing rapid flooding.</p>
+                  <p><strong>2. 2D Capillary Soil Moisture Diffusion:</strong> The 20×20 matrix models moisture migration governed by the finite-difference diffusion equation: <code>∂θ/∂t = D ∇²θ - Evaporation - RootUptake</code>. Coco-peat has a high diffusion coefficient (\(D=0.18\)) and high field capacity (85%), ensuring uniform moisture wicking.</p>
+                  <p><strong>3. Plant Moisture Stress:</strong> Each species has an optimal band (e.g. Mint: 45%–75%). Moisture below optimal causes wilting stress; moisture above 80% starves roots of oxygen.</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Right: Interactive Control Panel -->
+            <div class="dashboard-controls">
+
+              <!-- Playback Controls -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">⏱️ Simulation Clock</h3>
+                  <select id="m1-speed-select" class="form-control form-control-sm" style="width: 90px;">
+                    <option value="1">1x Speed</option>
+                    <option value="10" selected>10x Speed</option>
+                    <option value="100">100x Speed</option>
+                    <option value="1000">1000x Speed</option>
+                  </select>
+                </div>
+                <div class="button-group">
+                  <button id="m1-btn-play" class="btn btn-primary btn-block">▶ Play</button>
+                  <button id="m1-btn-pause" class="btn btn-outline-secondary btn-block" disabled>⏸ Pause</button>
+                </div>
+                <div class="button-group" style="margin-top: 8px;">
+                  <button id="m1-btn-step" class="btn btn-outline-secondary btn-block">+15 Mins</button>
+                  <button id="m1-btn-reset" class="btn btn-danger btn-block">↺ Reset</button>
+                </div>
+              </div>
+
+              <!-- Parameters -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">⚙️ Reservoir & Hydraulic Parameters</h3>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m1-capacity">Bottle Reservoir Capacity</label>
+                  <select id="m1-capacity" class="form-control">
+                    <option value="1.0">1.0 L PET Bottle</option>
+                    <option value="1.5">1.5 L PET Bottle</option>
+                    <option value="2.0" selected>2.0 L PET Bottle (Standard Canteen Waste)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m1-fill-level">Initial Water Fill Level</label>
+                    <span id="m1-fill-level-val" class="form-value-badge">100%</span>
+                  </div>
+                  <input type="range" id="m1-fill-level" class="slider-control" min="10" max="100" value="100" step="5">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m1-hole-diameter">Cap Orifice Diameter</label>
+                    <span id="m1-hole-diameter-val" class="form-value-badge">2.0 mm</span>
+                  </div>
+                  <input type="range" id="m1-hole-diameter" class="slider-control" min="1.0" max="4.0" value="2.0" step="0.2">
+                  <small class="text-muted">LDCE Report standard: 2.0 mm heated needle puncture</small>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m1-clogging">Cap Orifice Clogging</label>
+                    <span id="m1-clogging-val" class="form-value-badge">5%</span>
+                  </div>
+                  <input type="range" id="m1-clogging" class="slider-control" min="0" max="100" value="5" step="5">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m1-refill-interval">Auto-Refill Schedule</label>
+                    <span id="m1-refill-interval-val" class="form-value-badge">72 hrs</span>
+                  </div>
+                  <input type="range" id="m1-refill-interval" class="slider-control" min="12" max="120" value="72" step="6">
+                </div>
+              </div>
+
+              <!-- Soil & Plant Environment -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">🌿 Agronomic & Microclimate</h3>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m1-soil-type">Growing Medium</label>
+                  <select id="m1-soil-type" class="form-control">
+                    <option value="cocopeat" selected>Coco-Peat (85% Porosity, Lightweight 0.12 kg/L)</option>
+                    <option value="garden_soil">Garden Soil (45% Porosity, Heavy 1.25 kg/L)</option>
+                    <option value="mix">50:50 Coco-Peat & Garden Soil Mix</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m1-plant-type">Plant Specimen</label>
+                  <select id="m1-plant-type" class="form-control">
+                    <option value="mint" selected>Mint / Pudina (120 ml/day, 45-75% moist)</option>
+                    <option value="pothos">Money Plant / Pothos (80 ml/day, 35-65% moist)</option>
+                    <option value="coriander">Coriander / Dhaniya (100 ml/day, 40-70% moist)</option>
+                    <option value="chives">Garlic Chives (70 ml/day, 35-65% moist)</option>
+                    <option value="tomato">Cherry Tomato (260 ml/day, 50-85% moist)</option>
+                    <option value="succulents">Hardy Succulents (25 ml/day, 15-40% moist)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m1-temp">Ambient Air Temperature</label>
+                    <span id="m1-temp-val" class="form-value-badge">28 °C</span>
+                  </div>
+                  <input type="range" id="m1-temp" class="slider-control" min="20" max="45" value="28" step="1">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m1-sunlight">Sunlight Exposure</label>
+                  <select id="m1-sunlight" class="form-control">
+                    <option value="shade">Shade / Veranda (Low Evaporation)</option>
+                    <option value="partial" selected>Partial Sun (Campus Corridor)</option>
+                    <option value="full">Full Direct Sunlight (Roof / Unshaded Wall)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m1-calibration">Discharge Calibration Factor</label>
+                  <input type="number" id="m1-calibration" class="form-control" value="0.002" step="0.0005" min="0.0005" max="0.010">
+                  <small class="text-muted">Calibrates theoretical orifice velocity to porous soil contact</small>
+                </div>
+
+                <div class="button-group" style="margin-top: 10px;">
+                  <button id="m1-btn-save-run" class="btn btn-outline-primary btn-block">💾 Save This Run</button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- MODULE 2: WATER EFFICIENCY COMPARISON                            -->
+        <!-- ================================================================ -->
+        <section id="module2" class="module-pane">
+          <div class="dashboard-grid">
+
+            <div class="dashboard-stage">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">📊 Water Efficiency: Surface Watering vs Inverted Drip</h2>
+                  <span id="m2-report-claim-badge" class="badge badge-success">✓ Matches Report Claim (Up to 70% Saved)</span>
+                </div>
+
+                <div class="dual-canvas-container">
+                  <div class="canvas-wrapper">
+                    <canvas id="m2-canvas-line"></canvas>
+                  </div>
+                  <div class="canvas-wrapper">
+                    <canvas id="m2-canvas-bar"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Metrics Strip -->
+              <div class="metrics-strip">
+                <div class="metric-card">
+                  <div class="metric-label">Traditional Surface</div>
+                  <div id="m2-metric-surface-total" class="metric-value">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Inverted Drip Feeder</div>
+                  <div id="m2-metric-drip-total" class="metric-value">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Net Water Conserved</div>
+                  <div id="m2-metric-litres-saved" class="metric-value text-success">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Efficiency Gain</div>
+                  <div id="m2-metric-percent-saved" class="metric-value text-success">--</div>
+                </div>
+              </div>
+
+              <div id="m2-source-impact-note" class="alert alert-info"></div>
+
+              <div class="accordion-panel">
+                <div class="accordion-header">
+                  <span>📘 How this model works: Comparative Loss Allocation & The 70% Claim</span>
+                  <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                  <p>In conventional can-watering, high surface solar exposure drives 35–45% immediate evaporation. In addition, rapid pouring overflows small bottle planter rims (20% runoff) and causes gravity percolation (15%) past shallow roots. Thus, over 70% of applied water never reaches the plant.</p>
+                  <p>By contrast, the inverted PET bottle delivers slow, continuous capillary moisture directly at root depth (20–40 mm below surface). Surface evaporation is cut to &lt;5%, and runoff is zero, achieving empirical water savings of <strong>65% to 73%</strong>.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Controls for Module 2 -->
+            <div class="dashboard-controls">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">⚙️ Scenario Setup</h3>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-days">Simulation Duration</label>
+                    <span id="m2-days-val" class="form-value-badge">7 days</span>
+                  </div>
+                  <input type="range" id="m2-days" class="slider-control" min="7" max="30" value="7" step="1">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m2-plant-type">Plant Specimen</label>
+                  <select id="m2-plant-type" class="form-control">
+                    <option value="mint" selected>Mint / Pudina</option>
+                    <option value="pothos">Money Plant / Pothos</option>
+                    <option value="tomato">Cherry Tomato</option>
+                    <option value="chives">Garlic Chives</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m2-water-source">Source Water Type</label>
+                  <select id="m2-water-source" class="form-control">
+                    <option value="ro_reject" selected>RO Plant Reject Water (Saves 100% Potable Tap)</option>
+                    <option value="canteen_leftover">Canteen Leftover Drinking Water</option>
+                    <option value="fresh_water">Municipal Tap Water</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Sensitivity Loss Coefficients -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">🧪 Surface Watering Loss Coefficients</h3>
+                </div>
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-surf-evap">Surface Evaporation Loss</label>
+                    <span id="m2-surf-evap-val" class="form-value-badge">35%</span>
+                  </div>
+                  <input type="range" id="m2-surf-evap" class="slider-control" min="15" max="60" value="35">
+                </div>
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-surf-runoff">Runoff / Splashing Loss</label>
+                    <span id="m2-surf-runoff-val" class="form-value-badge">20%</span>
+                  </div>
+                  <input type="range" id="m2-surf-runoff" class="slider-control" min="5" max="40" value="20">
+                </div>
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-surf-perc">Deep Percolation Loss</label>
+                    <span id="m2-surf-perc-val" class="form-value-badge">15%</span>
+                  </div>
+                  <input type="range" id="m2-surf-perc" class="slider-control" min="5" max="30" value="15">
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">💧 Inverted Drip Loss Coefficients</h3>
+                </div>
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-drip-evap">Subsurface Evaporation</label>
+                    <span id="m2-drip-evap-val" class="form-value-badge">4%</span>
+                  </div>
+                  <input type="range" id="m2-drip-evap" class="slider-control" min="1" max="15" value="4">
+                </div>
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-drip-runoff">Surface Runoff Loss</label>
+                    <span id="m2-drip-runoff-val" class="form-value-badge">0%</span>
+                  </div>
+                  <input type="range" id="m2-drip-runoff" class="slider-control" min="0" max="10" value="0">
+                </div>
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m2-drip-perc">Percolation Drainage</label>
+                    <span id="m2-drip-perc-val" class="form-value-badge">6%</span>
+                  </div>
+                  <input type="range" id="m2-drip-perc" class="slider-control" min="2" max="20" value="6">
+                </div>
+
+                <div class="button-group" style="margin-top: 10px;">
+                  <button id="m2-btn-recalculate" class="btn btn-primary btn-block">🔄 Recalculate</button>
+                  <button id="m2-btn-export-csv" class="btn btn-outline-secondary btn-block">📥 CSV</button>
+                  <button id="m2-btn-save-run" class="btn btn-outline-primary btn-block">💾 Save</button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- MODULE 3: HANGING PLANTER LOAD & SAFETY SIMULATOR               -->
+        <!-- ================================================================ -->
+        <section id="module3" class="module-pane">
+          <div class="dashboard-grid">
+
+            <div class="dashboard-stage">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">🪢 Structural Mechanics & Hanging Rope Safety</h2>
+                  <div class="button-group">
+                    <button id="m3-btn-pour-water" class="btn btn-sm btn-primary">💧 Pour Water (Raise Saturation)</button>
+                    <button id="m3-btn-dry-out" class="btn btn-sm btn-outline-secondary">☀️ Dry Out</button>
+                  </div>
+                </div>
+
+                <div class="canvas-wrapper full-canvas-wrapper" style="min-height: 380px;">
+                  <canvas id="m3-canvas-stack"></canvas>
+                </div>
+              </div>
+
+              <!-- Structural Verdict Banner -->
+              <div id="m3-alert-banner" class="alert alert-success"></div>
+
+              <!-- Metrics Strip -->
+              <div class="metrics-strip">
+                <div class="metric-card">
+                  <div class="metric-label">Dry Stack Load</div>
+                  <div id="m3-metric-dry-load" class="metric-value">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Wet Total Load</div>
+                  <div id="m3-metric-wet-load" class="metric-value">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Water Mass Added</div>
+                  <div id="m3-metric-water-added" class="metric-value text-info">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Tension per Strand</div>
+                  <div id="m3-metric-tension" class="metric-value">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Safety Factor (SF)</div>
+                  <div id="m3-metric-safety-factor" class="metric-value">--</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">Verdict</div>
+                  <div id="m3-metric-verdict" class="metric-value">--</div>
+                </div>
+              </div>
+
+              <div id="m3-cocopeat-note" class="alert alert-info"></div>
+
+              <div class="accordion-panel">
+                <div class="accordion-header">
+                  <span>📘 How this model works: Structural Safety Factor Formulation</span>
+                  <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                  <p><strong>Load Equation:</strong> The total load on the top wall anchor is the cumulative wet mass of all \(N\) bottles:</p>
+                  <p><code>Total Load = N · [ M_PET + (V_soil · ρ_soil_dry) + M_plant + (V_soil · Porosity · Saturation% · ρ_water) ]</code></p>
+                  <p><strong>Safety Factor:</strong> Standard structural engineering requires \(SF \ge 2.0\):</p>
+                  <p><code>SF = min[ (BreakingStrength_rope · n_strands) / TotalLoad , HookRating / TotalLoad ]</code></p>
+                  <p><strong>Why Coco-Peat is Critical:</strong> Garden soil has a dry bulk density of 1.25 kg/L vs only 0.12 kg/L for coco-peat (10× difference). A 5-bottle stack filled with wet garden soil weighs ~14 kgf, snapping standard twine and loosening plastic wall plugs. Coco-peat keeps the total saturated load under 4.5 kgf, guaranteeing safe suspension.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Controls for Module 3 -->
+            <div class="dashboard-controls">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">⚙️ Vertical Stack Configuration</h3>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m3-bottle-count">Bottles in Vertical Stack</label>
+                    <span id="m3-bottle-count-val" class="form-value-badge">4</span>
+                  </div>
+                  <input type="range" id="m3-bottle-count" class="slider-control" min="1" max="10" value="4">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m3-soil-volume">Soil Volume per Bottle</label>
+                    <span id="m3-soil-volume-val" class="form-value-badge">1.5 L</span>
+                  </div>
+                  <input type="range" id="m3-soil-volume" class="slider-control" min="0.8" max="2.0" value="1.5" step="0.1">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m3-soil-type">Soil Type</label>
+                  <select id="m3-soil-type" class="form-control">
+                    <option value="cocopeat" selected>Coco-Peat (Dry density: 0.12 kg/L)</option>
+                    <option value="garden_soil">Garden Soil (Dry density: 1.25 kg/L - Heavy!)</option>
+                    <option value="mix">50:50 Soil / Coir Mix (0.68 kg/L)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m3-saturation">Moisture Saturation Level</label>
+                    <span id="m3-saturation-val" class="form-value-badge">60%</span>
+                  </div>
+                  <input type="range" id="m3-saturation" class="slider-control" min="0" max="100" value="60" step="5">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m3-plant-mass">Plant Green Mass</label>
+                    <span id="m3-plant-mass-val" class="form-value-badge">0.10 kg</span>
+                  </div>
+                  <input type="range" id="m3-plant-mass" class="slider-control" min="0.05" max="0.5" value="0.10" step="0.05">
+                </div>
+              </div>
+
+              <!-- Rope & Fasteners -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">🪢 Rigging & Fastener Ratings</h3>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m3-rope-type">Suspension Cord Material</label>
+                  <select id="m3-rope-type" class="form-control">
+                    <option value="twine">Natural Jute Twine (18 kgf breaking limit)</option>
+                    <option value="nylon" selected>Braided Nylon Cord (95 kgf breaking limit)</option>
+                    <option value="wire">Galvanized Steel Wire (220 kgf breaking limit)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m3-breaking-strength">Cord Breaking Strength (kgf)</label>
+                  <input type="number" id="m3-breaking-strength" class="form-control" value="95">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m3-rope-strands">Number of Rope Strands</label>
+                  <select id="m3-rope-strands" class="form-control">
+                    <option value="1">1 Strand (Single central string - High Risk)</option>
+                    <option value="2" selected>2 Strands (Parallel vertical harness - Standard)</option>
+                    <option value="4">4 Strands (Double harness)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m3-hook-rating">Top Wall Hook Pullout Limit (kgf)</label>
+                  <input type="number" id="m3-hook-rating" class="form-control" value="50">
+                  <small class="text-muted">Masonry screw with nylon rawlplug</small>
+                </div>
+
+                <div class="button-group" style="margin-top: 10px;">
+                  <button id="m3-btn-calculate" class="btn btn-primary btn-block">🔄 Recalculate</button>
+                  <button id="m3-btn-save-run" class="btn btn-outline-primary btn-block">💾 Save</button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- MODULE 4: 7-DAY TESTING & MONITORING SIMULATION                  -->
+        <!-- ================================================================ -->
+        <section id="module4" class="module-pane">
+          <div class="dashboard-grid">
+
+            <div class="dashboard-stage">
+
+              <!-- 7-Day Performance Report Card -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">🧪 7-Day Testing Summary Report Card</h2>
+                  <div class="button-group">
+                    <button id="m4-btn-run-7day" class="btn btn-sm btn-primary">▶ Run 7-Day Simulation</button>
+                    <button id="m4-btn-export-csv" class="btn btn-sm btn-outline-secondary">📥 CSV</button>
+                    <button id="m4-btn-save-report" class="btn btn-sm btn-outline-primary">💾 Save</button>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 100px 1fr; gap: 20px; align-items: center; margin-bottom: 14px;">
+                  <div style="text-align: center;">
+                    <div id="m4-grade-badge" class="grade-badge grade-A">A</div>
+                    <small style="font-weight: bold; color: var(--text-muted);">Overall Grade</small>
+                  </div>
+                  <div class="metrics-strip" style="margin: 0;">
+                    <div class="metric-card">
+                      <div class="metric-label">Avg Plant Health</div>
+                      <div id="m4-card-avg-health" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-label">Final Health</div>
+                      <div id="m4-card-final-health" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-label">7-Day Water Used</div>
+                      <div id="m4-card-total-water" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-label">Peak Algae</div>
+                      <div id="m4-card-peak-algae" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-label">Moisture Stability</div>
+                      <div id="m4-card-stability" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-label">Interventions</div>
+                      <div id="m4-card-interventions-count" class="metric-value">0</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="canvas-wrapper full-canvas-wrapper" style="min-height: 280px;">
+                  <canvas id="m4-canvas-chart"></canvas>
+                </div>
+              </div>
+
+              <!-- Hourly Telemetry Log Table -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">📋 Hourly Environmental Telemetry Log (168 Hours)</h3>
+                  <div>
+                    <select id="m4-day-filter" class="form-control form-control-sm" style="width: 140px;">
+                      <option value="all">All 7 Days</option>
+                      <option value="1">Day 1 Only</option>
+                      <option value="2">Day 2 Only</option>
+                      <option value="3">Day 3 Only</option>
+                      <option value="4">Day 4 Only</option>
+                      <option value="5">Day 5 Only</option>
+                      <option value="6">Day 6 Only</option>
+                      <option value="7">Day 7 Only</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 280px;">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Timeline</th>
+                        <th>Ambient Temp</th>
+                        <th>Water Volume</th>
+                        <th>Drip Rate</th>
+                        <th>Root Moisture</th>
+                        <th>Plant Health</th>
+                        <th>Algae Index</th>
+                        <th>Event / Note</th>
+                      </tr>
+                    </thead>
+                    <tbody id="m4-log-table-body">
+                      <!-- Populated dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="accordion-panel">
+                <div class="accordion-header">
+                  <span>📘 How this model works: Diurnal Cycles & Algae Prevention</span>
+                  <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                  <p><strong>Diurnal Climate Modeling:</strong> Temperature oscillates sinusoidally between nighttime minima (e.g. 22°C at 5:00 AM) and afternoon heat peaks (38°C at 2:00 PM). Solar radiation drives transpiration peaks around midday.</p>
+                  <p><strong>Algae Formation in Clear PET:</strong> Transparent PET bottles allow photosynthetically active radiation to trigger green algae colonization. Algae clogs the 2mm orifice and competes for root oxygen. Painting the exterior opaque black eliminates solar light penetration, reducing algae colonization to 0%.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Controls for Module 4 -->
+            <div class="dashboard-controls">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">🌤️ 7-Day Climate Pattern</h3>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m4-weather-pattern">Weather Pattern</label>
+                  <select id="m4-weather-pattern" class="form-control">
+                    <option value="typical" selected>Typical Campus Weather (24°C - 38°C diurnal)</option>
+                    <option value="heatwave">Ahmedabad Summer Heatwave (30°C - 44°C)</option>
+                    <option value="rainy">Monsoon Cloud Cover (22°C - 30°C)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m4-plant-type">Plant Specimen</label>
+                  <select id="m4-plant-type" class="form-control">
+                    <option value="mint" selected>Mint / Pudina</option>
+                    <option value="pothos">Money Plant / Pothos</option>
+                    <option value="coriander">Coriander</option>
+                    <option value="tomato">Cherry Tomato</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m4-soil-type">Growing Medium</label>
+                  <select id="m4-soil-type" class="form-control">
+                    <option value="cocopeat" selected>Coco-Peat</option>
+                    <option value="garden_soil">Garden Soil</option>
+                    <option value="mix">50:50 Mix</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m4-initial-hole">Initial Hole Size</label>
+                    <span id="m4-initial-hole-val" class="form-value-badge">2.0 mm</span>
+                  </div>
+                  <input type="range" id="m4-initial-hole" class="slider-control" min="1.0" max="4.0" value="2.0" step="0.2">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m4-chart-metric">Telemetry Chart Display</label>
+                  <select id="m4-chart-metric" class="form-control">
+                    <option value="overview" selected>Overview: Water, Moisture & Health</option>
+                    <option value="temperature_algae">Temperature & Algae Growth</option>
+                    <option value="drip_rate">Torricelli Drip Outflow Rate</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Mid-Run Interventions -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">🛠️ Mid-Run Human Interventions</h3>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="m4-inv-type">Intervention Action</label>
+                  <select id="m4-inv-type" class="form-control">
+                    <option value="refill">Refill Bottle to 2.0 L</option>
+                    <option value="adjust_hole">Adjust Cap Hole Diameter</option>
+                    <option value="paint_black">Paint Bottle Black (UV / Algae Shield)</option>
+                    <option value="add_shade">Install 50% Green Shade Net</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m4-inv-hour">Scheduled Hour</label>
+                    <span id="m4-inv-hour-val" class="form-value-badge">Hour 48 (Day 3)</span>
+                  </div>
+                  <input type="range" id="m4-inv-hour" class="slider-control" min="1" max="160" value="48">
+                </div>
+
+                <div id="m4-inv-holesize-group" class="form-group" style="display: none;">
+                  <label class="form-label" for="m4-inv-holesize">New Hole Diameter (mm)</label>
+                  <input type="number" id="m4-inv-holesize" class="form-control" value="2.5" step="0.5" min="1.0" max="4.0">
+                </div>
+
+                <div class="button-group">
+                  <button id="m4-btn-add-intervention" class="btn btn-primary btn-block">+ Add Intervention</button>
+                  <button id="m4-btn-clear-interventions" class="btn btn-outline-secondary btn-block">Clear</button>
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <label class="form-label">Active Scheduled Interventions:</label>
+                  <div id="m4-intervention-list" style="margin-top: 6px;"></div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- MODULE 5: PROJECT MANAGEMENT SIMULATOR                           -->
+        <!-- ================================================================ -->
+        <section id="module5" class="module-pane">
+          <!-- Sub-tabs for Project Management -->
+          <div class="subtabs-bar">
+            <button class="subtab-btn m5-subtab-btn active" data-pane="m5-pane-gantt">📅 1. CPM & Gantt Chart</button>
+            <button class="subtab-btn m5-subtab-btn" data-pane="m5-pane-montecarlo">🎲 2. Monte Carlo Simulation</button>
+            <button class="subtab-btn m5-subtab-btn" data-pane="m5-pane-cost">💰 3. Parametric Budgeting</button>
+            <button class="subtab-btn m5-subtab-btn" data-pane="m5-pane-risks">🛡️ 4. 5×5 Risk Matrix</button>
+          </div>
+
+          <!-- Subpane 1: CPM & Gantt Chart -->
+          <div id="m5-pane-gantt" class="m5-pane active">
+            <div class="dashboard-grid">
+              <div class="dashboard-stage">
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="card-title">📅 Critical Path Method (CPM) & Project Schedule</h2>
+                    <div>
+                      <span class="badge badge-info">Critical Path: <strong id="m5-cpm-path">A1 -> A2 -> A3 -> A4 -> A5 -> A6</strong></span>
+                      <span class="badge badge-success" style="margin-left: 6px;">Total: <strong id="m5-cpm-duration">18 Days</strong></span>
+                    </div>
+                  </div>
+                  <div class="canvas-wrapper full-canvas-wrapper" style="min-height: 300px;">
+                    <canvas id="m5-canvas-gantt"></canvas>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">📝 Activity Schedule Table (Editable Durations & Predecessors)</h3>
+                    <div class="button-group">
+                      <button id="m5-btn-recalc-cpm" class="btn btn-sm btn-primary">Recalculate CPM</button>
+                      <button id="m5-btn-reset-tasks" class="btn btn-sm btn-outline-secondary">Reset to Baseline</button>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Activity Name</th>
+                          <th>Duration (Days)</th>
+                          <th>Predecessors</th>
+                          <th>Assigned Members</th>
+                          <th>Schedule Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="m5-task-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-controls">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">📘 CPM Principles</h3>
+                  </div>
+                  <p style="font-size: 12px; line-height: 1.6;">
+                    <strong>Critical Path:</strong> Sequence of dependent tasks with <strong>Zero Total Float (Slack = 0)</strong>. Any delay in critical tasks directly delays station commissioning.
+                  </p>
+                  <p style="font-size: 12px; line-height: 1.6; margin-top: 8px;">
+                    <strong>Forward Pass:</strong> Computes Early Start (ES) and Early Finish (EF).<br>
+                    <strong>Backward Pass:</strong> Computes Late Start (LS) and Late Finish (LF).<br>
+                    <strong>Slack (Float):</strong> <code>LS - ES = LF - EF</code>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subpane 2: Monte Carlo Simulation -->
+          <div id="m5-pane-montecarlo" class="m5-pane">
+            <div class="dashboard-grid">
+              <div class="dashboard-stage">
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="card-title">🎲 Monte Carlo Project Completion Distribution (1,000 Runs)</h2>
+                  </div>
+                  <div class="canvas-wrapper full-canvas-wrapper" style="min-height: 320px;">
+                    <canvas id="m5-canvas-histogram"></canvas>
+                  </div>
+                </div>
+
+                <div class="metrics-strip">
+                  <div class="metric-card">
+                    <div class="metric-label">Mean Duration</div>
+                    <div id="m5-mc-mean" class="metric-value">--</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Median (P50)</div>
+                    <div id="m5-mc-median" class="metric-value">--</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Std Deviation</div>
+                    <div id="m5-mc-stddev" class="metric-value">--</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">90th Percentile</div>
+                    <div id="m5-mc-p90" class="metric-value">--</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">On-Time Probability</div>
+                    <div id="m5-mc-prob" class="metric-value text-success">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-controls">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">⚙️ Monte Carlo Parameters</h3>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="form-group-row">
+                      <label class="form-label" for="m5-target-deadline">Target Completion Deadline</label>
+                      <span id="m5-target-deadline-val" class="form-value-badge">18 days</span>
+                    </div>
+                    <input type="range" id="m5-target-deadline" class="slider-control" min="12" max="25" value="18">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="m5-mc-iterations">Simulation Sample Size</label>
+                    <select id="m5-mc-iterations" class="form-control">
+                      <option value="500">500 Iterations</option>
+                      <option value="1000" selected>1,000 Iterations (Recommended)</option>
+                      <option value="2000">2,000 Iterations</option>
+                    </select>
+                  </div>
+
+                  <button id="m5-btn-run-mc" class="btn btn-primary btn-block">🎲 Re-Run Monte Carlo</button>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">📘 Triangular Sampling</h3>
+                  </div>
+                  <p style="font-size: 11px; line-height: 1.5; color: var(--text-secondary);">
+                    Task durations are sampled from three-point estimates: <strong>Optimistic (a)</strong>, <strong>Most Likely (m)</strong>, and <strong>Pessimistic (b)</strong>. Accounts for unexpected delays like PET bottle procurement or rain delays.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subpane 3: Parametric Budgeting -->
+          <div id="m5-pane-cost" class="m5-pane">
+            <div class="dashboard-grid">
+              <div class="dashboard-stage">
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="card-title">💰 Itemized Station Budget Sheet (20-Bottle Station &lt; Rs. 250)</h2>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Bill of Materials (BOM) Item</th>
+                          <th>Quantity</th>
+                          <th>Unit Rate</th>
+                          <th>Total Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody id="m5-cost-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="metrics-strip">
+                  <div class="metric-card">
+                    <div class="metric-label">Total Station Cost</div>
+                    <div id="m5-cost-total" class="metric-value text-success">Rs. 250</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Cost per Planter Unit</div>
+                    <div id="m5-cost-per-bottle" class="metric-value">Rs. 12.50</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Savings vs Commercial Pots</div>
+                    <div id="m5-cost-saved" class="metric-value text-success">Rs. 2,150 (89.5%)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-controls">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">⚙️ Scale Parameters</h3>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="form-group-row">
+                      <label class="form-label" for="m5-cost-bottle-count">Station Bottle Count</label>
+                      <span id="m5-cost-bottle-count-val" class="form-value-badge">20</span>
+                    </div>
+                    <input type="range" id="m5-cost-bottle-count" class="slider-control" min="5" max="50" value="20" step="5">
+                  </div>
+
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" id="m5-cost-inc-paint" class="custom-control-input" checked>
+                      <label class="custom-control-label" for="m5-cost-inc-paint">Include Black Algae Paint (Rs.)</label>
+                    </div>
+                    <input type="number" id="m5-cost-paint-price" class="form-control form-control-sm" value="80" style="margin-top: 5px;">
+                  </div>
+
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" id="m5-cost-inc-hooks" class="custom-control-input" checked>
+                      <label class="custom-control-label" for="m5-cost-inc-hooks">Include Heavy Wall Hooks (Rs.)</label>
+                    </div>
+                    <input type="number" id="m5-cost-hooks-price" class="form-control form-control-sm" value="40" style="margin-top: 5px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subpane 4: 5x5 Risk Matrix -->
+          <div id="m5-pane-risks" class="m5-pane">
+            <div class="dashboard-grid">
+              <div class="dashboard-stage">
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="card-title">🛡️ 5×5 Probability vs Impact Risk Heatmap</h2>
+                    <span id="m5-risk-verdict-badge" class="badge badge-success">Acceptable / Managed</span>
+                  </div>
+                  <div class="canvas-wrapper full-canvas-wrapper" style="min-height: 320px;">
+                    <canvas id="m5-canvas-risk-matrix"></canvas>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">📋 Risk Mitigation Checklist & Scoring</h3>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Identified Risk Event</th>
+                          <th>Inherent Risk</th>
+                          <th>Active Engineering Mitigation</th>
+                          <th>Residual Risk</th>
+                        </tr>
+                      </thead>
+                      <tbody id="m5-risk-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-controls">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">📘 Risk Management</h3>
+                  </div>
+                  <p style="font-size: 12px; line-height: 1.5; color: var(--text-secondary);">
+                    Under ISO 31000 standards, <code>Risk Score = Probability (1-5) × Impact (1-5)</code>.
+                    Toggle the mitigation checkboxes on the left to see residual risk drop from critical zones into acceptable green territory.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- MODULE 6: ENVIRONMENTAL IMPACT CALCULATOR                        -->
+        <!-- ================================================================ -->
+        <section id="module6" class="module-pane">
+          <div class="dashboard-grid">
+
+            <div class="dashboard-stage">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">🌍 Campus Sustainability & Ecological Indicators</h2>
+                  <div class="button-group">
+                    <button id="m6-btn-recalculate" class="btn btn-sm btn-primary">Recalculate Impact</button>
+                    <button id="m6-btn-save-run" class="btn btn-sm btn-outline-primary">💾 Save</button>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                  <div class="metric-card" style="padding: 20px;">
+                    <div class="metric-label">Total PET Bottles Upcycled</div>
+                    <div id="m6-counter-total-bottles" class="metric-value text-success" style="font-size: 32px;">60</div>
+                    <small class="text-muted">Repurposed campus canteen waste</small>
+                  </div>
+
+                  <div class="metric-card" style="padding: 20px;">
+                    <div class="metric-label">Plastic Diverted from Landfill</div>
+                    <div id="m6-counter-plastic-kg" class="metric-value text-success" style="font-size: 32px;">2.70 kg</div>
+                    <small class="text-muted">Based on 45g per 2L PET bottle</small>
+                  </div>
+
+                  <div class="metric-card" style="padding: 20px;">
+                    <div class="metric-label">Embodied Carbon Offset</div>
+                    <div id="m6-counter-carbon-kg" class="metric-value text-success" style="font-size: 32px;">5.81 kg CO₂e</div>
+                    <small class="text-muted">Virgin PET production avoided (2.15 kg CO₂e/kg)</small>
+                  </div>
+
+                  <div class="metric-card" style="padding: 20px;">
+                    <div class="metric-label">Potable Tap Water Conserved</div>
+                    <div id="m6-counter-water-l" class="metric-value text-info" style="font-size: 32px;">990 L / mo</div>
+                    <small class="text-muted">Using RO reject water & drip efficiency</small>
+                  </div>
+
+                  <div class="metric-card" style="padding: 20px;">
+                    <div class="metric-label">Vertical Wall Area Greened</div>
+                    <div id="m6-counter-wall-area" class="metric-value text-success" style="font-size: 32px;">2.70 m²</div>
+                    <small class="text-muted">Biophilic campus microclimate cooling</small>
+                  </div>
+
+                  <div class="metric-card" style="padding: 20px;">
+                    <div class="metric-label">Capital Cost Reduction</div>
+                    <div id="m6-counter-cost-saved" class="metric-value text-success" style="font-size: 32px;">Rs. 6,450</div>
+                    <small class="text-muted">Saved vs commercial vertical planter pots</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-panel">
+                <div class="accordion-header">
+                  <span>📘 How this model works: Ecological Calculations & Life Cycle Assumptions</span>
+                  <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                  <p><strong>1. Plastic Diversion:</strong> Standard 2L beverage bottles weigh ~45 grams of polyethylene terephthalate (PET). Upcycling 60 bottles diverts 2.7 kg of non-biodegradable polymer from landfills.</p>
+                  <p><strong>2. Carbon Footprint Avoidance:</strong> Producing 1 kg of virgin PET requires crude oil distillation, emitting ~2.15 kg CO₂ equivalent. Diverting waste bottles achieves direct Scope 3 carbon offsets.</p>
+                  <p><strong>3. Potable Water Conservation:</strong> Tap water is preserved by feeding the stations with RO plant reject water (TDS 800–1200 ppm, acceptable for hardy mint, pothos, and succulents).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Controls for Module 6 -->
+            <div class="dashboard-controls">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">⚙️ Station Scaling</h3>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m6-bottle-count">Bottles per Station</label>
+                    <span id="m6-bottle-count-val" class="form-value-badge">20</span>
+                  </div>
+                  <input type="range" id="m6-bottle-count" class="slider-control" min="5" max="50" value="20" step="5">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m6-station-count">Number of Installed Stations</label>
+                    <span id="m6-station-count-val" class="form-value-badge">3</span>
+                  </div>
+                  <input type="range" id="m6-station-count" class="slider-control" min="1" max="10" value="3" step="1">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group-row">
+                    <label class="form-label" for="m6-bottle-weight">Average PET Bottle Weight</label>
+                    <span id="m6-bottle-weight-val" class="form-value-badge">45 g</span>
+                  </div>
+                  <input type="range" id="m6-bottle-weight" class="slider-control" min="30" max="60" value="45" step="1">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ==================================================================== -->
+  <!-- MODALS: SAVED RUNS & VIVA PREPARATION                                -->
+  <!-- ==================================================================== -->
+
+  <!-- Saved Runs Modal -->
+  <div id="modal-saved-runs" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">💾 Saved Simulation Runs (localStorage)</h3>
+        <button id="btn-close-saved-runs" class="btn btn-sm btn-outline-secondary">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+          Select any 2 runs with checkboxes to compare them with an overlaid chart.
+        </p>
+        <div id="saved-runs-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-compare-selected-runs" class="btn btn-primary btn-sm" disabled>Select 2 Runs to Compare</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Viva-Prep Engineering Formulas Modal -->
+  <div id="modal-viva-prep" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 860px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🎓 Viva-Prep: Mathematical Models, Principles & Limitations</h3>
+        <button id="btn-close-viva-modal" class="btn btn-sm btn-outline-secondary">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 13px; line-height: 1.6;">
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;">1. Torricelli Outflow & Hydraulic Micro-Drip</h4>
+        <p><strong>Equation:</strong> <code>Q = Cd · A · √(2gh) · (1 - Clogging) · F_backpressure · K_calib</code></p>
+        <p><strong>Why used:</strong> Derives from Bernoulli's conservation of energy for fluid flowing through a small orifice under hydrostatic head height \(h\). \(C_d \approx 0.60\) accounts for flow contraction at sharp-edged drilled holes.</p>
+        <p><strong>Physical Limitation:</strong> Standard Torricelli assumes free atmospheric discharge into open air. In our buried inverted bottle, wet soil at the cap interface creates a hydraulic counter-gradient and capillary boundary layer resistance, requiring calibration to match measured 20–80 ml/hr drip rates.</p>
+        <hr style="margin: 14px 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;">2. 2D Soil Moisture Finite-Difference Diffusion</h4>
+        <p><strong>Equation:</strong> <code>∂θ/∂t = D · (∂²θ/∂x² + ∂²θ/∂y²) - Evaporation - PlantRootUptake</code></p>
+        <p><strong>Why used:</strong> Discretizes the cylindrical root zone into a 20×20 matrix to visualize capillary wicking away from the single drip emitter.</p>
+        <p><strong>Why Coco-Peat:</strong> Coco-peat has a high diffusion coefficient (\(D=0.18\)) and massive field capacity (85% pore volume), spreading moisture laterally rather than letting it immediately channel straight down into runoff.</p>
+        <hr style="margin: 14px 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;">3. Structural Load & Factor of Safety (SF)</h4>
+        <p><strong>Equation:</strong> <code>SF = min( (F_rope · n_strands) / TotalLoad , F_hook / TotalLoad )</code></p>
+        <p><strong>Engineering Rule:</strong> Structural suspension requires \(SF \ge 2.0\). Water adds 1 kg per liter of pore volume. Garden soil saturated with water multiplies the hanging mass by nearly 3×, risking cord snap or wall hook pull-out. Lightweight coco-peat (0.12 kg/L dry density) is essential to maintain safety margins.</p>
+        <hr style="margin: 14px 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;">4. Project Management: Critical Path Method (CPM)</h4>
+        <p><strong>Concept:</strong> Identifies the longest dependency chain through the 6 micro-project activities. Tasks with zero total float (<code>Total Float = LS - ES = 0</code>) are critical. Testing (7 days) forms the principal bottleneck.</p>
+        <hr style="margin: 14px 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;">5. Monte Carlo Simulation (Triangular Distribution)</h4>
+        <p><strong>Equation:</strong> Samples durations between optimistic \(a\), likely \(m\), and pessimistic \(b\) over 1,000 iterations via inverse transform sampling to calculate probability of on-time delivery against college submission deadlines.</p>
+
+      </div>
+      <div class="modal-footer">
+        <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">🖨️ Print Notes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Scripts (Zero External Dependencies) -->
+  <script src="js/model.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/module1.js"></script>
+  <script src="js/module2.js"></script>
+  <script src="js/module3.js"></script>
+  <script src="js/module4.js"></script>
+  <script src="js/module5.js"></script>
+  <script src="js/module6.js"></script>
+  <script src="js/ui.js"></script>
+
+  <!-- Application Bootstrap -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize UI orchestration
+      PlanterUI.init();
+
+      // 2. Initialize simulation modules
+      Module1DripFeeder.init();
+      Module2WaterComparison.init();
+      Module3LoadSafety.init();
+      Module4TestingPhase.init();
+      Module5ProjectManagement.init();
+      Module6Environmental.init();
+
+      console.log('🌱 Low-Cost Vertical Hydro-Planter Simulation App Initialized Successfully!');
+    });
+  </script>
+
+</body>
+</html>

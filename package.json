@@ -1,0 +1,25 @@
+{
+  "name": "pet-hydro-planter-simulation",
+  "version": "1.0.0",
+  "description": "Interactive Simulation Web App for Low-Cost Vertical Hydro-Planter Station Using Repurposed Campus PET Waste (LDCE B.E. Sem V IT Project Management Micro-Project)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "simulation",
+    "drip-irrigation",
+    "hydro-planter",
+    "best-out-of-waste",
+    "pet-bottle",
+    "project-management",
+    "monte-carlo",
+    "cpm"
+  ],
+  "author": "Antigravity Simulation Engineer",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
